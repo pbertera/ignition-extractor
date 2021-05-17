@@ -78,10 +78,13 @@ def write_unit(systemd_path, unit):
             fh.write(unit["contents"])
 
 
-def extract(ignition_file, dest_dir):
-    ign_file = open(ignition_file)
-    ign_json = json.load(ign_file)
-    ign_file.close()
+def extract(dest_dir, ignition_file = None):
+    if ignition_file:
+        ign_file = open(ignition_file)
+        ign_json = json.load(ign_file)
+        ign_file.close()
+    else:
+        ign_json = json.load(sys.stdin)
     os.makedirs(dest_dir, exist_ok=True)
     storage_path = os.path.join(dest_dir, 'storage')
     os.makedirs(storage_path, exist_ok=True)
@@ -134,7 +137,13 @@ def extract(ignition_file, dest_dir):
     # TODO networkd
 
 if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print('Usage: %s <ignition-file> <extract-dir>' % sys.argv[0])
+    if len(sys.argv) == 3:
+        dest_dir = sys.argv[1]
+        file = sys.argv[2]
+        extract(dest_dir, file)
+    if len(sys.argv) == 2:
+        dest_dir = sys.argv[1]
+        extract(dest_dir)
+    else:
+        print('Usage: %s extract-dir <ignition-file>' % sys.argv[0])
         sys.exit(-1)
-    extract(sys.argv[1], sys.argv[2])
