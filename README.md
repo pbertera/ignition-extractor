@@ -161,5 +161,5 @@ ign-root
 ## Diff between two MachineConfig
 
 ```bash
-$ ./extractor.py -d -f rendered-infra-52a886f905663a424954dd22c3116e3d.txt -f rendered-infra-5010f1247f65a4aff09cb78a66f7781a.txt -s yaml -m -c
+$ ./extractor.py -d -f mc1.yaml -f mc2.yaml -s yaml -m -c
 ```
