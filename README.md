@@ -1,10 +1,25 @@
 # Core OS Ignition extractor
 
+Most of the code is a copy-paste from [omg](https://github.com/kxr/o-must-gather).
+
+```bash
+$ Usage: extractor.py [OPTIONS]
+
+Options:
+  -h, --help     show this help message and exit
+  -d             perform a diff between two ignition files
+  -c             show content of the diff
+  -f FILES       file to load, use "-" for stdin.
+  -o OUTPUT_DIR  outout directory where the ignition file should be extracted
+  -s SYNTAX      syntax of the files (json or yaml)
+  -m             the loaded content is a MachineConfig
+```
+
 ## Extract from a Machine Config
 
-```
-$ oc get mc 00-master -o json | jq -r '.spec.config' | ./extractor.py 00-masters
-$ tree 00-masters
+```bash
+$ oc get mc 00-master -o json | ./extractor.py -f - -m -d masters
+$ tree masters
 masters/
 ├── storage
 │   ├── etc
@@ -97,14 +112,12 @@ masters/
     │   └── mco-controlplane-nice.conf
     └── zincati.service.d
         └── mco-disabled.conf
-
-46 directories, 45 files
 ```
 
 ## Extract from an ignition file
 
-```
-$ ./extractor.py ign.json ign-root
+```bash
+$ ./extractor.py -f ign.json -o ign-root
 Storage: ign-root/storage/etc/containers/registries.conf
 Storage: ign-root/storage/etc/ignition-machine-config-encapsulated.json
 Storage: ign-root/storage/etc/motd
@@ -143,4 +156,10 @@ ign-root
     └── systemd-journal-gatewayd.service.d
         ├── certs.conf
         └── systemd-journal-gatewayd.socket
+```
+
+## Diff between two MachineConfig
+
+```bash
+$ ./extractor.py -d -f rendered-infra-52a886f905663a424954dd22c3116e3d.txt -f rendered-infra-5010f1247f65a4aff09cb78a66f7781a.txt -s yaml -m -c
 ```
