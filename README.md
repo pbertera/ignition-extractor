@@ -1,6 +1,7 @@
 # Core OS Ignition extractor
 
 Most of the code is a copy-paste from [omg](https://github.com/kxr/o-must-gather).
+One day should be replaced by omg itself see [here](https://github.com/kxr/o-must-gather/issues/51)
 
 ```bash
 $ Usage: extractor.py [OPTIONS]
